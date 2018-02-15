@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Build your first Messenger Chatbot</title>
+    <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="author" content="Bechir Nemlaghi">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.5.0/css/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.5.0/css/theme/beige.css" id="theme">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai-sublime.min.css">
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.5.0/css/print/pdf.css' : 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.5.0/css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h1>Build your first Messenger Chatbot</h1>
+                <p>
+                    <small>Presented by
+                        <a href="https://github.com/bashz">Bashz</a>
+                    </small>
+                </p>
+            </section>
+            <section>
+                <h3>Chatbots</h3>
+                <section>
+                    <h5>What are chatbots?</h5>
+                    <p class="fragment fade-up">A Chatbot is a program that mimic a human user chat.</p>
+                    <p class="fragment fade-up">Chatbots exist since the 1980s.</p>
+                </section>
+                <section>
+                    <img src='images/comming.jpg'>
+                </section>
+                <section>
+                    <p class="fragment fade-up">
+                        <b>53%</b> of people are more likely to shop with a business they can message.</p>
+                    <p class="fragment fade-up">
+                        <b>56%</b> of people would rather message than call customer service.</p>
+                    <p class="fragment fade-up">
+                        <b>63%</b> of people are messaging more than they did two years ago.</p>
+                    <p class="fragment fade-up">
+                        <b>80%</b> of adults and 91% of teens use messaging apps every day.</p>
+                </section>
+            </section>
+            <section data-state="stats">
+                <h3>Technical Design</h3>
+                <svg xmlns="http://www.w3.org/2000/svg" style="background-color: rgb(255, 255, 255);" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    width="570px" height="531px" version="1.1" content="&lt;mxfile userAgent=&quot;Mozilla/5.0 (X11; Linux x86_64; rv:59.0) Gecko/20100101 Firefox/59.0&quot; version=&quot;8.1.8&quot; editor=&quot;www.draw.io&quot; type=&quot;google&quot;&gt;&lt;diagram id=&quot;c0e4aa70-e7a0-8686-42df-44ac125ee2f9&quot; name=&quot;Page-1&quot;&gt;7Vrfc+I2EP5reOyNbVmGPCYkNHeTTjOTm+ndo7AVrMa2GFkE6F/fFZZ/SSYwwUChl4dgrSVZ/na/3dXKAzROV78LMo//4BFNBp4TrQbofuB5LvID+FGSdSHBWAtmgkW6Uy14Yf9QLXS0dMEimrc6Ss4TyeZtYcizjIayJSNC8GW72ytP2k+dkxm1BC8hSWzpXyyScSEdYaeWP1I2i8snu46+MyXh20zwRaafN/DQ6+avuJ2Sci7dP49JxJcNEXoYoLHgXBZX6WpME4VtCVsxbrLlbrVuQTO5zwCECaIBDkYj1/WdV/ybnuGdJAuNxbeYZyC551QvWa5LmGD1c3W5SJPbUHIxQHfvVEgGQD6RKU2eec4kg+Hofsql5Cl0SNSNuwqmMU/UuPsaqHqO24TN1FjJ5yCNZZpAw4VLvUboRldbX9yt4AQzpTylUqyhSzmg1Ni6UmHRXtb6RloUN1Q9xNrKtIXNqplrlOFCA70n6L4FugX1MmaSvsxJqNpLYF0bEZLPCx68shWN+oHIG7UhGtoIVYRtQlQJe8UIXwRGlVk1QBp1YDQ6BkTBbohKxoaLKfzc7UBsqhhKo6dpj8RDuI2Y32FWQQdiLjoGZEMLsq+ZpCKj0oIOZoLwo1CrQEz4ItqNYi4Ff6MNRzceTyYPAdx5ZUnSkDvOcDKZ9GSYQRtm5HWw1+/C+SjsHe02TZpFtyp0b4Alec7CNox0xeQPuHa+gA8umj83zfLmMxUMVkoVmo6SZbDqH81G0d/DFcQ0svIAA2BYIl+IkH4cLiURMyo/8ly2ohqKwB16KGWCJkSy9/Yyu3Sjn/DMGbxAHeeGhoMyA1jxenpUM1MwJqpSlnIiz5iowMCaaGMq1Wt/znpczzKfCbBtyvnbwAsSqVyVgKuZunpWuZ1pXEAk+RErM55Rg5BaRHQSEtJsY1pWdpKyKEq2OVNReFBthH24TzNv6eB1F629Y7DaRR/o5Wo1EOCWBkbnVICdOT4vpgm4Tni4lLBbgj0YTwmDDH7C5terFN9t0wJ35GFuVz5/HLXskYntDHdV9PqCg2E7ggUIlQIr6JVRshUihz2GPLxHyNuirBOFPMMWgqGh431DnmvkUIFpLMcMeXZm+siul7/uHvuo03lVO1t9hCH8fwR/GePOAX9VG2s4S3BaL7rJhYz5jGckeailBiQNjfxNpVzrCiNZSA6ieoYnrkpLja3t4RuCm26gD/RpyG8rCJm7tGO6ohuLDs2aoJOTNSziFq6u2kMhQwNdGYZzMo50JBQXw5FtSB/KEWOr6+PTcaRcbYMjf74p41AEmXG1Shmz/IrpYYLv2/S4ORk7/EtmBzoOO0ZnZIddJ/heDGkEEhVBzFrOladdGO0mzQljSnDJrNlSZT2QNb4Z9U+Yd3n2kdf3mGRveRlXlkxNcLXkMCqdVfg4Dzk6TorUM1L4V9c8YR1CaUZFemcN9qp0Q0PRcZx0NXoyyy3VEXlTT50nTcc4SvdGfTqx+sypeeR0Dvemze/DqlvR6QAf+HnU7S1ixQ4ZK0aEMZHTTR7cpEiqlkfCkOaqJcH8s+slCnZQO9p3fHLiYnwih1YGtp5q1H5dkv7ZvLu1Pl0cw1Yl6v6oEuzBFL9bUaepT9+0/eXny9NGTeiU5Wlk73cPsR530DrfcJC73VS2mlZP9uPvYT/BL/s50H68HuynMzj37UkuXct+eUZcpmfmp2fH1LK97z/ESwTYcBMuHmz9LuiXm/jPuwlo1l86F93rz8nRw78=&lt;/diagram&gt;&lt;/mxfile&gt;">
+                    <defs/>
+                    <g transform="translate(0.5,0.5)">
+                        <ellipse cx="26" cy="49" rx="7.5" ry="9.375" fill="#ffffff" stroke="#000000" pointer-events="none" />
+                        <path d="M 26 58.75 L 26 90 M 26 65 L 11 65 M 26 65 L 41 65 M 26 90 L 11 115 M 26 90 L 41 115" fill="none"
+                            stroke="#000000" stroke-miterlimit="10" pointer-events="none" />
+                        <g transform="translate(-0.5,122.5)">
+                            <switch>
+                                <foreignObject style="overflow:visible;" pointer-events="all" width="53" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;">
+                                        <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;">Jhon Doe</div>
+                                    </div>
+                                </foreignObject>
+                                <text x="27" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Jhon Doe</text>
+                            </switch>
+                        </g>
+                        <rect x="191" y="0" width="210" height="210" fill="#ffffff" stroke="#000000" pointer-events="none"
+                        />
+                        <rect x="191" y="30" width="80" height="80" fill="#ffffff" stroke="#000000" pointer-events="none"
+                        />
+                        <path d="M 261 400 L 301 400 L 321 420 L 321 530 L 281 530 L 261 510 L 261 400 Z" fill="#ffffff"
+                            stroke="#000000" stroke-miterlimit="10" pointer-events="none" />
+                        <path d="M 281 530 L 281 420 L 261 400 M 281 420 L 321 420" fill="none" stroke="#000000" stroke-miterlimit="10"
+                            pointer-events="none" />
+                        <path d="M 231 277.5 C 183 277.5 171 305 209.4 310.5 C 171 322.6 214.2 349 245.4 338 C 267 360 339 360 363 338 C 411 338 411 316 381 305 C 411 283 363 261 321 272 C 291 255.5 243 255.5 231 277.5 Z"
+                            fill="#007fff" stroke="#ccffe6" stroke-miterlimit="10" pointer-events="none" />
+                        <g transform="translate(270.5,298.5)">
+                            <switch>
+                                <foreignObject style="overflow:visible;" pointer-events="all" width="41" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 42px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+                                        <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;">Internet</div>
+                                    </div>
+                                </foreignObject>
+                                <text x="21" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Internet</text>
+                            </switch>
+                        </g>
+                        <path data-step="1" style="opacity:0;" d="M 34 48 L 184.63 49.92" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"
+                        />
+                        <path data-step="1" style="opacity:0;" d="M 189.88 49.99 L 182.84 53.4 L 184.63 49.92 L 182.93 46.4 Z" fill="#000000" stroke="#000000"
+                            stroke-miterlimit="10" pointer-events="none" />
+                        <g transform="translate(203.5,46.5)">
+                            <switch>
+                                <foreignObject style="overflow:visible;" pointer-events="all" width="54" height="27" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 55px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+                                        <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;">Facebook
+                                            <br />Page</div>
+                                    </div>
+                                </foreignObject>
+                                <text x="27" y="20" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Facebook&lt;br&gt;Page</text>
+                            </switch>
+                        </g>
+                        <g transform="translate(268.5,13.5)">
+                            <switch>
+                                <foreignObject style="overflow:visible;" pointer-events="all" width="54" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 55px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+                                        <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;">Facebook</div>
+                                    </div>
+                                </foreignObject>
+                                <text x="27" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Facebook</text>
+                            </switch>
+                        </g>
+                        <g transform="translate(325.5,433.5)">
+                            <switch>
+                                <foreignObject style="overflow:visible;" pointer-events="all" width="120" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 121px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+                                        <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;">Public https domain/ip</div>
+                                    </div>
+                                </foreignObject>
+                                <text x="60" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Public https domain/ip</text>
+                            </switch>
+                        </g>
+                        <path data-step="6" style="opacity:0;" d="M 191 90 L 34.37 87.12" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"
+                        />
+                        <path data-step="6" style="opacity:0;" d="M 29.12 87.02 L 36.18 83.65 L 34.37 87.12 L 36.05 90.65 Z" fill="#000000" stroke="#000000"
+                            stroke-miterlimit="10" pointer-events="none" />
+                        <g data-step="1" style="opacity:0;" transform="translate(104.5,33.5)">
+                            <switch>
+                                <foreignObject style="overflow:visible;" pointer-events="all" width="12" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 13px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+                                        <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;">Hi</div>
+                                    </div>
+                                </foreignObject>
+                                <text x="6" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Hi</text>
+                            </switch>
+                        </g>
+                        <g data-step="6" style="opacity:0;" transform="translate(96.5,98.5)">
+                            <switch>
+                                <foreignObject style="overflow:visible;" pointer-events="all" width="29" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 30px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+                                        <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;">Hello</div>
+                                    </div>
+                                </foreignObject>
+                                <text x="15" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Hello</text>
+                            </switch>
+                        </g>
+                        <path data-step="2" style="opacity:0;" d="M 141 240 L 244.63 240" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"
+                        />
+                        <path data-step="2" style="opacity:0;" d="M 249.88 240 L 242.88 243.5 L 244.63 240 L 242.88 236.5 Z" fill="#000000" stroke="#000000"
+                            stroke-miterlimit="10" pointer-events="none" />
+                        <g data-step="2" style="opacity:0;" transform="translate(41.5,226.5)">
+                            <switch>
+                                <foreignObject style="overflow:visible;" pointer-events="all" width="98" height="27" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 98px; white-space: normal; overflow-wrap: normal; text-align: center;">
+                                        <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;">Jhon Doe says: Hi</div>
+                                    </div>
+                                </foreignObject>
+                                <text x="49" y="20" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Jhon Doe says: Hi</text>
+                            </switch>
+                        </g>
+                        <path data-step="3" style="opacity:0;" d="M 171 380 L 274.63 380" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"
+                        />
+                        <path data-step="3" style="opacity:0;" d="M 279.88 380 L 272.88 383.5 L 274.63 380 L 272.88 376.5 Z" fill="#000000" stroke="#000000"
+                            stroke-miterlimit="10" pointer-events="none" />
+                        <g data-step="3" style="opacity:0;" transform="translate(87.5,373.5)">
+                            <switch>
+                                <foreignObject style="overflow:visible;" pointer-events="all" width="76" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 77px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+                                        <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;">Ok we got this</div>
+                                    </div>
+                                </foreignObject>
+                                <text x="38" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Ok we got this</text>
+                            </switch>
+                        </g>
+                        <path data-step="4" style="opacity:0;" d="M 441 380 L 297.37 380" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"
+                        />
+                        <path data-step="4" style="opacity:0;" d="M 292.12 380 L 299.12 376.5 L 297.37 380 L 299.12 383.5 Z" fill="#000000" stroke="#000000"
+                            stroke-miterlimit="10" pointer-events="none" />
+                        <g data-step="4" style="opacity:0;" transform="translate(451.5,366.5)">
+                            <switch>
+                                <foreignObject style="overflow:visible;" pointer-events="all" width="79" height="27" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 80px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+                                        <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;">Tell Jhon Doe:
+                                            <br />Hello</div>
+                                    </div>
+                                </foreignObject>
+                                <text x="40" y="20" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Tell Jhon Doe:&lt;br&gt;Hello</text>
+                            </switch>
+                        </g>
+                        <path data-step="5" style="opacity:0;" d="M 411 230 L 376 230 L 376 240 L 347.37 240" fill="none" stroke="#000000" stroke-miterlimit="10"
+                            pointer-events="none" />
+                        <path data-step="5" style="opacity:0;" d="M 342.12 240 L 349.12 236.5 L 347.37 240 L 349.12 243.5 Z" fill="#000000" stroke="#000000"
+                            stroke-miterlimit="10" pointer-events="none" />
+                        <g data-step="5" style="opacity:0;" transform="translate(420.5,223.5)">
+                            <switch>
+                                <foreignObject style="overflow:visible;" pointer-events="all" width="80" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 81px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+                                        <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;">Thanks we will</div>
+                                    </div>
+                                </foreignObject>
+                                <text x="40" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Thanks we will</text>
+                            </switch>
+                        </g>
+                        <g data-step="7" style="opacity:0;" transform="translate(21.5,198.5)">
+                            <switch>
+                                <foreignObject style="overflow:visible;" pointer-events="all" width="138" height="27" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(87, 8, 8); line-height: 1.2; vertical-align: top; width: 138px; white-space: normal; overflow-wrap: normal; text-align: center;">
+                                        <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;">I am Facebook here is your secret</div>
+                                    </div>
+                                </foreignObject>
+                                <text x="69" y="20" fill="#aa0000" text-anchor="middle" font-size="12px" font-family="Helvetica">I am Facebook & here is your secret</text>
+                            </switch>
+                        </g>
+                        <path d="M 91 220 L 91 220" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"
+                        />
+                        <path d="M 91 220 L 91 220 L 91 220 L 91 220 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10"
+                            pointer-events="none" />
+                        <g data-step="8" style="opacity:0;" transform="translate(414.5,336.5)">
+                            <switch>
+                                <foreignObject style="overflow:visible;" pointer-events="all" width="153" height="27" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(87, 8, 8); line-height: 1.2; vertical-align: top; width: 153px; white-space: normal; overflow-wrap: normal; text-align: center;">
+                                        <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;">I am the chatbot here is my access token</div>
+                                    </div>
+                                </foreignObject>
+                                <text x="77" y="20" fill="#aa0000" text-anchor="middle" font-size="12px" font-family="Helvetica">I am the chatbot here is my access token</text>
+                            </switch>
+                        </g>
+                        <path data-step="3" style="opacity:0;" d="M 276 400 L 281.8 216.36" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"
+                        />
+                        <path data-step="3" style="opacity:0;" d="M 281.96 211.12 L 285.24 218.22 L 281.8 216.36 L 278.25 218 Z" fill="#000000" stroke="#000000"
+                            stroke-miterlimit="10" pointer-events="none" />
+                        <path data-step="2" style="opacity:0;" d="M 244 210 L 266.25 397.68" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"
+                        />
+                        <path data-step="2" style="opacity:0;" d="M 266.87 402.89 L 262.57 396.35 L 266.25 397.68 L 269.52 395.53 Z" fill="#000000" stroke="#000000"
+                            stroke-miterlimit="10" pointer-events="none" />
+                        <path data-step="4" style="opacity:0;" d="M 291 400 L 323.88 216.27" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"
+                        />
+                        <path data-step="4" style="opacity:0;" d="M 324.8 211.1 L 327.02 218.61 L 323.88 216.27 L 320.12 217.37 Z" fill="#000000" stroke="#000000"
+                            stroke-miterlimit="10" pointer-events="none" />
+                        <path data-step="5" style="opacity:0;" d="M 349 210 L 301.57 395.83" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"
+                        />
+                        <path data-step="5" style="opacity:0;" d="M 300.28 400.92 L 298.62 393.27 L 301.57 395.83 L 305.4 395 Z" fill="#000000" stroke="#000000"
+                            stroke-miterlimit="10" pointer-events="none" />
+                    </g>
+                </svg>
+            </section>
+            <section>
+                <h3>Where to start</h3>
+                <section>
+                    <h5>Useful links</h5>
+                    <ul>
+                        <li>
+                            <a href="https://developers.facebook.com/docs/messenger-platform/introduction">For those who learn by reading</a>
+                        </li>
+                        <li>
+                            <a href="https://developers.facebook.com/docs/messenger-platform/getting-started">For those who learn by coding</a>
+                        </li>
+                        <li>
+                            <a href="https://developers.facebook.com/docs/messenger-platform/reference">References are always useful</a>
+                        </li>
+                    </ul>
+                </section>
+            </section>
+            <section>
+                <h3>Let's Build</h3>
+                <section>
+                    <h5>Bot creation</h5>
+                    <p class="fragment fade-up">We need first to create a Facebook page and a Facebook app.</p>
+                    <p class="fragment fade-up">Then we add messeneger as a product of our app.</p>
+                    <p class="fragment fade-up">Now we need to validate the our server.</p>
+                </section>
+                <section>
+                    <h5>The boilerPlate</h5>
+                    <a href="https://github.com/FacebookDevCTunis/messenger-bot-sails">Boilerplate</a>
+                </section>
+                <section>
+                    <h5>Installation & Configuration</h5>
+                    <pre class="pre-html">
+                        <code class="shell hljs" data-trim contenteditable> 
+git clone https://github.com/FacebookDevCTunis/messenger-bot-sails
+cd messenger-bot-sails
+npm install
+editor config/messenger.js
+node app.js
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <h5>Fake Deployment</h5>
+                    <p>We can provide a temporary public domain by using <a href="https://ngrok.com/">ngrok</a>.</p>
+                </section>
+            </section>
+            <section>
+                <h3>Diving into the code</h3>
+            </section>
+        </div>
+        <footer style="position: absolute; bottom: 0; text-align: center; width: 100%">
+            <a href="http://facebookdevctunis.github.io/chatbots.html">
+                <small>
+                    http://facebookdevctunis.github.io/chatbots.html
+                </small>
+            </a>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.5.0/lib/js/head.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.5.0/js/reveal.min.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            history: true,
+            center: true,
+            transition: 'slide',
+            dependencies: [
+                {
+                    src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.5.0/lib/js/classList.js', condition: function () {
+                        return !document.body.classList;
+                    }
+                },
+                {
+                    src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.5.0/plugin/highlight/highlight.js', async: true, callback: function () {
+                        hljs.initHighlightingOnLoad();
+                    }
+                },
+                { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.5.0/plugin/zoom-js/zoom.js', async: true },
+                { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.5.0/plugin/notes/notes.js', async: true }
+            ]
+        });
+        var currentStep = 0;
+        window.addEventListener("mousedown", handleClick, false);
+        window.addEventListener("contextmenu", function (e) { e.preventDefault(); }, false);
+        Reveal.addEventListener( 'stats', function() {
+            window.removeEventListener("mousedown", handleClick, false);
+            window.addEventListener("mousedown", handleSVGClick, false);
+        });
+        function handleSVGClick(e) {
+            console.log(currentStep)
+            e.preventDefault();
+            if (e.button === 0)
+                currentStep++;
+            if((currentStep >= 8 && e.button === 0) || (currentStep <= 0 && e.button === 2)) {
+                window.removeEventListener("mousedown", handleSVGClick, false);
+                window.addEventListener("mousedown", handleClick, false);
+            }
+            var selections = document.querySelectorAll('[data-step="' + currentStep + '"]')
+            selections.forEach(function(selected){
+                selected.style.opacity = e.button === 2 ? 0 : 1;
+            })
+            if (e.button === 2)
+                currentStep--;
+
+            if(currentStep < 0) currentStep = 0;
+            if(currentStep > 8) currentStep = 8;
+        }
+        function handleClick(e) {
+            console.log(currentStep)
+            e.preventDefault();
+            if (e.button === 0) Reveal.next();
+            if (e.button === 2) Reveal.prev();
+        }
+    </script>
+</body>
+
+</html>
