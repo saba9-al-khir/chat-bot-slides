@@ -20,7 +20,10 @@
     </script>
 </head>
 
-<body>
+<body style="background-image:url(images/bkg.png)">
+    <div>
+        <img src='images/fdc.png' style="position: absolute;right: 4px;width: 26%;">
+    </div>
     <div class="reveal">
         <div class="slides">
             <section>
@@ -299,11 +302,101 @@ node app.js
             <section>
                 <h3>Diving into the code</h3>
             </section>
+            <section>
+                <h5>First Message & NLP</h5>
+                <pre class="pre-html">
+/api/controllers/BotController.js<code class="javascript hljs" data-trim contenteditable>
+// Line 121 ...
+var handleMessage = function (user, text, nlps) {
+  if(text.match(/hi/i))
+    return sendAPI.text(user, 'Hi', fallback);
+  if(nlps.length) {
+    // you can implement your own selection of the topic
+    var nlp = nlps[0];
+    if(nlp.topic === "greeting") {
+      return sendAPI.text(user, 'Hi', fallback);
+    }
+  } else {
+    return unreconizedCall(user, "messaging.text", text);
+  }
+}
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h5>Postback</h5>
+                <pre class="pre-html">
+/api/controllers/BotController.js<code class="javascript hljs" data-trim contenteditable>
+// Line 130 ...
+  } else {
+    return sendAPI.send({
+      recipient: {
+        id: user.fbId
+      },
+      message: {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "button",
+            text: "I couldn't understand you, are you looking for some pictures?",
+            buttons: [{
+              type: "postback",
+              title: "Picture",
+              payload: "picture"
+            }]
+          }
+        }
+      }, fallback)
+  }
+
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h5>Template</h5>
+                <pre class="pre-html">
+/api/controllers/BotController.js<code class="javascript hljs" data-trim contenteditable>
+// Line 113 ...
+var handlePayload = function (user, payload) {
+  if(payload === 'picture') {
+    return sendAPI.send({
+      recipient: {
+        id: user.fbId
+      },
+      message: {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "generic",
+              elements: [{
+                title: "Random Image",
+                image_url: "https://loremflickr.com/382/200",
+                subtitle: "Lorem Ipsum Lorem Ipsum\n" 
+                  + "Lorem Ipsum Lorem Ipsum Lorem\n"
+                  + "Ipsum Lorem Ipsum Lorem Ipsum",
+              buttons: [{
+                type: "postback",
+                title: "Add to favorits",
+                payload: "ADD_FAVORIT:" + user.id
+              }]
+            }]
+          }
+        }
+      }
+    }, fallback)
+  }
+}
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Thanks, time for Q&A</h1>
+            </section>
         </div>
         <footer style="position: absolute; bottom: 0; text-align: center; width: 100%">
-            <a href="http://facebookdevctunis.github.io/chatbots.html">
+            <a href="https://facebookdevctunis.github.io/chat-bot-slides/">
                 <small>
-                    http://facebookdevctunis.github.io/chatbots.html
+                    https://facebookdevctunis.github.io/chat-bot-slides/
                 </small>
             </a>
         </footer>
